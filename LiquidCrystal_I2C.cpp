@@ -44,8 +44,16 @@ inline void LiquidCrystal_I2C::write(uint8_t value) {
 // can't assume that its in that state when a sketch starts (and the
 // LiquidCrystal constructor is called).
 
+#ifdef ARDUINO_ARCH_ESP8266
+LiquidCrystal_I2C(uint8_t lcd_Addr,uint8_t lcd_cols,uint8_t lcd_rows, uint8_t sda_pin=SDA, uint8_t scl_pin=SCL);
+{
+	_sda_pin = _sda_pin;
+	_sda_pin = _scl_pin;
+#else
 LiquidCrystal_I2C::LiquidCrystal_I2C(uint8_t lcd_Addr,uint8_t lcd_cols,uint8_t lcd_rows)
 {
+#endif
+
   _Addr = lcd_Addr;
   _cols = lcd_cols;
   _rows = lcd_rows;
@@ -63,7 +71,13 @@ void LiquidCrystal_I2C::init(){
 
 void LiquidCrystal_I2C::init_priv()
 {
+
+#ifdef ARDUINO_ARCH_ESP8266
+	Wire.begin(_sda_pin, _scl_pin);
+#else
 	Wire.begin();
+#endif
+
 	_displayfunction = LCD_4BITMODE | LCD_1LINE | LCD_5x8DOTS;
 	begin(_cols, _rows);  
 }

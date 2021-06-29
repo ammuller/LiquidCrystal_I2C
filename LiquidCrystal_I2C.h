@@ -54,7 +54,14 @@
 
 class LiquidCrystal_I2C : public Print {
 public:
+	
+
+#ifdef ARDUINO_ARCH_ESP8266
+  LiquidCrystal_I2C(uint8_t lcd_Addr,uint8_t lcd_cols,uint8_t lcd_rows, uint8_t sda_pin=SDA, uint8_t scl_pin=SCL);
+#else
   LiquidCrystal_I2C(uint8_t lcd_Addr,uint8_t lcd_cols,uint8_t lcd_rows);
+#endif
+  
   void begin(uint8_t cols, uint8_t rows, uint8_t charsize = LCD_5x8DOTS );
   void clear();
   void home();
@@ -126,6 +133,8 @@ private:
   uint8_t _cols;
   uint8_t _rows;
   uint8_t _backlightval;
+  uint8_t _sda_pin;
+  uint8_t _scl_pin;
 };
 
 #endif
