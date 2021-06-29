@@ -45,21 +45,27 @@ inline void LiquidCrystal_I2C::write(uint8_t value) {
 // LiquidCrystal constructor is called).
 
 #ifdef ARDUINO_ARCH_ESP8266
-LiquidCrystal_I2C(uint8_t lcd_Addr,uint8_t lcd_cols,uint8_t lcd_rows, uint8_t sda_pin=SDA, uint8_t scl_pin=SCL);
+LiquidCrystal_I2C::LiquidCrystal_I2C(uint8_t lcd_Addr,uint8_t lcd_cols,uint8_t lcd_rows, uint8_t sda_pin, uint8_t scl_pin)
 {
-	_sda_pin = _sda_pin;
-	_sda_pin = _scl_pin;
+	_Addr = lcd_Addr;
+	_cols = lcd_cols;
+	_rows = lcd_rows;
+	_backlightval = LCD_NOBACKLIGHT;
+	_sda_pin = sda_pin;
+	_scl_pin = scl_pin;
+}
 #else
 LiquidCrystal_I2C::LiquidCrystal_I2C(uint8_t lcd_Addr,uint8_t lcd_cols,uint8_t lcd_rows)
 {
-#endif
 
-  _Addr = lcd_Addr;
-  _cols = lcd_cols;
-  _rows = lcd_rows;
-  _backlightval = LCD_NOBACKLIGHT;
+	_Addr = lcd_Addr;
+	_cols = lcd_cols;
+	_rows = lcd_rows;
+	_backlightval = LCD_NOBACKLIGHT;
+	_sda_pin = SDA;
+	_scl_pin = SCL;
 }
-
+#endif
 void LiquidCrystal_I2C::oled_init(){
   _oled = true;
 	init_priv();
